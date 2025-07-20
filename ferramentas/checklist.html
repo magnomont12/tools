@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2071987878697192"
-        crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <title>Checklist com Prioridades</title>
-  <meta name="description" content="Organize sua lista de tarefas com níveis de prioridade. Ordene e salve tudo no navegador.">
+  <meta name="description" content="Organize sua lista de tarefas com níveis de prioridade.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -19,28 +17,11 @@
       --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      padding: 2rem;
       margin: 0;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #6b7280;
     }
 
     .container {
@@ -50,6 +31,10 @@
       padding: 2rem;
       border-radius: 12px;
       box-shadow: var(--shadow);
+    }
+
+    h1, p {
+      text-align: center;
     }
 
     input[type="text"], input[type="number"] {
@@ -62,14 +47,13 @@
 
     button {
       padding: 0.75rem 1.2rem;
-      cursor: pointer;
       background-color: var(--btn-color);
       color: white;
       border: none;
       border-radius: 8px;
       font-weight: 600;
-      transition: background-color 0.2s ease;
       margin: 0.3rem;
+      cursor: pointer;
     }
 
     button:hover {
@@ -95,11 +79,6 @@
       align-items: center;
       border-bottom: 1px solid #e5e7eb;
       padding: 0.8rem 0;
-      transition: background 0.2s ease;
-    }
-
-    li:hover {
-      background-color: #f3f4f6;
     }
 
     li.completed span.task-text {
@@ -130,6 +109,9 @@
   </style>
 </head>
 <body>
+
+  <div id="header"></div>
+
   <div class="container">
     <h1>📋 Checklist com Prioridades</h1>
     <p>Adicione tarefas com um nível de importância (quanto menor o número, maior a prioridade).</p>
@@ -147,6 +129,9 @@
 
     <ul id="listaTarefas"></ul>
   </div>
+
+  <div id="footer"></div>
+  <script src="/componentes/componentes.js"></script>
 
   <script>
     let tarefas = JSON.parse(localStorage.getItem("checklist_prioridades")) || [];
