@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de Juros Compostos com Parcelas Fixas</title>
+  <meta name="description" content="Simule parcelas mensais com juros compostos. Informe valor, juros e número de parcelas para calcular o total a pagar e os juros pagos.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 20px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simulador de Juros Compostos com Parcelas</h1>
+  <p>Informe os dados abaixo para simular o financiamento.</p>
+
+  <input type="number" id="valor" placeholder="Valor emprestado (R$)" step="0.01" />
+  <input type="number" id="juros" placeholder="Juros mensais (%)" step="0.01" />
+  <input type="number" id="parcelas" placeholder="Número de parcelas" />
+  <br>
+  <button onclick="calcular()">Calcular</button>
+
+  <div id="resultado"></div>
+
+  <script>
+  function calcular() {
+    const valor = parseFloat(document.getElementById('valor').value);
+    const juros = parseFloat(document.getElementById('juros').value) / 100;
+    const parcelas = parseInt(document.getElementById('parcelas').value);
+    const resultado = document.getElementById('resultado');
+
+    if (!valor || !juros || !parcelas || parcelas <= 0) {
+      resultado.innerHTML = "<p>Preencha todos os campos corretamente.</p>";
+      return;
+    }
+
+    const i = juros;
+    const n = parcelas;
+
+    // Cálculo da parcela fixa (Price)
+    const fator = Math.pow(1 + i, n);
+    const pmt = valor * (i * fator) / (fator - 1);
+    let saldoDevedor = valor;
+    let totalJuros = 0;
+    let html = `
+      <h3>Resultado:</h3>
+      <p><strong>Valor da parcela:</strong> R$ ${pmt.toFixed(2)}</p>
+      <h4>Detalhamento das parcelas:</h4>
+      <table border="1" cellspacing="0" cellpadding="6" style="margin: auto;">
+        <tr>
+          <th>Mês</th>
+          <th>Parcela</th>
+          <th>Juros</th>
+          <th>Saldo Devedor</th>
+        </tr>
+    `;
+
+    for (let mes = 1; mes <= n; mes++) {
+      const jurosMes = saldoDevedor * i;
+      const amortizacao = pmt - jurosMes;
+      saldoDevedor -= amortizacao;
+      totalJuros += jurosMes;
+
+      html += `
+        <tr>
+          <td>${mes}</td>
+          <td>R$ ${pmt.toFixed(2)}</td>
+          <td>R$ ${jurosMes.toFixed(2)}</td>
+          <td>R$ ${saldoDevedor > 0 ? saldoDevedor.toFixed(2) : '0.00'}</td>
+        </tr>
+      `;
+    }
+
+    const totalPago = pmt * n;
+    html += `</table>
+      <h4>Resumo:</h4>
+      <p><strong>Total pago ao final:</strong> R$ ${totalPago.toFixed(2)}</p>
+      <p><strong>Total de juros pagos:</strong> R$ ${totalJuros.toFixed(2)}</p>
+    `;
+    resultado.innerHTML = html;
+  }
+</script>
+
+</body>
+</html>

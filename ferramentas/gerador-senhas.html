@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Senhas Seguras</title>
+  <meta name="description" content="Crie senhas seguras com letras, números e símbolos. Gere senhas aleatórias para proteger suas contas.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; text-align: center; }
+    input[type="number"] { width: 80px; padding: 10px; margin: 10px; }
+    label { margin-right: 10px; }
+    button { padding: 10px 20px; cursor: pointer; }
+    #senha { margin-top: 20px; font-weight: bold; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Gerador de Senhas Seguras</h1>
+  <p>Escolha os critérios para gerar sua senha segura:</p>
+
+  <label>Tamanho:
+    <input type="number" id="tamanho" min="6" max="32" value="12">
+  </label>
+  <br>
+  <label><input type="checkbox" id="letras" checked> Letras</label>
+  <label><input type="checkbox" id="numeros" checked> Números</label>
+  <label><input type="checkbox" id="simbolos" checked> Símbolos</label>
+  <br><br>
+  <button onclick="gerarSenha()">Gerar Senha</button>
+
+  <p id="senha"></p>
+
+  <script>
+    function gerarSenha() {
+      const letras = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const numeros = "0123456789";
+      const simbolos = "!@#$%^&*()-_=+[]{}<>?|";
+      let caracteres = "";
+      const incluirLetras = document.getElementById("letras").checked;
+      const incluirNumeros = document.getElementById("numeros").checked;
+      const incluirSimbolos = document.getElementById("simbolos").checked;
+      const tamanho = parseInt(document.getElementById("tamanho").value);
+
+      if (incluirLetras) caracteres += letras;
+      if (incluirNumeros) caracteres += numeros;
+      if (incluirSimbolos) caracteres += simbolos;
+
+      if (!caracteres) {
+        document.getElementById("senha").innerText = "Selecione pelo menos um tipo de caractere.";
+        return;
+      }
+
+      let senha = "";
+      for (let i = 0; i < tamanho; i++) {
+        const rand = Math.floor(Math.random() * caracteres.length);
+        senha += caracteres[rand];
+      }
+
+      document.getElementById("senha").innerText = "Senha gerada: " + senha;
+    }
+  </script>
+</body>
+</html>

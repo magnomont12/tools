@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Checklist com Prioridades</title>
+  <meta name="description" content="Organize sua lista de tarefas com níveis de prioridade. Ordene e salve tudo no navegador.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h1 { text-align: center; }
+
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      margin: 10px 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    li.completed span {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .btn-remove {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+    }
+
+    .peso {
+      font-size: 14px;
+      color: #888;
+      margin-left: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Checklist com Prioridades</h1>
+  <p>Adicione tarefas com um nível de importância (quanto menor o número, maior a prioridade).</p>
+
+  <input type="text" id="novaTarefa" placeholder="Digite uma nova tarefa" />
+  <input type="number" id="peso" placeholder="Prioridade" min="1" value="1" />
+  <button onclick="adicionarTarefa()">Adicionar</button>
+
+  <div class="controls">
+    <button onclick="ordenarCrescente()">Ordenar por prioridade ↑</button>
+    <button onclick="ordenarDecrescente()">Ordenar por prioridade ↓</button>
+  </div>
+
+  <ul id="listaTarefas"></ul>
+
+  <script>
+    let tarefas = JSON.parse(localStorage.getItem("checklist_prioridades")) || [];
+
+    function salvar() {
+      localStorage.setItem("checklist_prioridades", JSON.stringify(tarefas));
+    }
+
+    function renderizar() {
+      const ul = document.getElementById("listaTarefas");
+      ul.innerHTML = "";
+      tarefas.forEach((tarefa, index) => {
+        const li = document.createElement("li");
+        li.className = tarefa.concluida ? "completed" : "";
+
+        const span = document.createElement("span");
+        span.textContent = tarefa.texto;
+        span.style.cursor = "pointer";
+        span.onclick = () => toggleConcluida(index);
+
+        const prioridade = document.createElement("span");
+        prioridade.className = "peso";
+        prioridade.textContent = `(Prioridade: ${tarefa.peso})`;
+
+        const remover = document.createElement("button");
+        remover.textContent = "Remover";
+        remover.className = "btn-remove";
+        remover.onclick = () => removerTarefa(index);
+
+        li.appendChild(span);
+        li.appendChild(prioridade);
+        li.appendChild(remover);
+        ul.appendChild(li);
+      });
+    }
+
+    function adicionarTarefa() {
+      const input = document.getElementById("novaTarefa");
+      const pesoInput = document.getElementById("peso");
+      const texto = input.value.trim();
+      const peso = parseInt(pesoInput.value);
+
+      if (texto === "" || isNaN(peso)) return;
+
+      tarefas.push({ texto, concluida: false, peso });
+      input.value = "";
+      pesoInput.value = 1;
+      salvar();
+      renderizar();
+    }
+
+    function toggleConcluida(index) {
+      tarefas[index].concluida = !tarefas[index].concluida;
+      salvar();
+      renderizar();
+    }
+
+    function removerTarefa(index) {
+      tarefas.splice(index, 1);
+      salvar();
+      renderizar();
+    }
+
+    function ordenarCrescente() {
+      tarefas.sort((a, b) => a.peso - b.peso);
+      salvar();
+      renderizar();
+    }
+
+    function ordenarDecrescente() {
+      tarefas.sort((a, b) => b.peso - a.peso);
+      salvar();
+      renderizar();
+    }
+
+    renderizar();
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Planejador de Estudos</title>
+  <meta name="description" content="Organize seus estudos por tema, data e horário. Tudo salvo localmente.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h1 { text-align: center; }
+
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+
+    input[type="date"], input[type="time"] {
+      width: 170px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.concluido span {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .btn-remove {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+    }
+
+    .info {
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Planejador de Estudos</h1>
+  <p>Adicione o tema, escolha a data e defina horário de início e fim do estudo.</p>
+
+  <input type="text" id="tema" placeholder="Tema ou disciplina" />
+  <input type="date" id="data" />
+  <input type="time" id="inicio" />
+  <input type="time" id="fim" />
+  <button onclick="adicionarEstudo()">Adicionar</button>
+
+  <ul id="listaEstudos"></ul>
+
+  <script>
+    // Define a data mínima como hoje
+    const hoje = new Date().toISOString().split("T")[0];
+    document.getElementById("data").min = hoje;
+
+    let estudos = JSON.parse(localStorage.getItem("planejador_estudos_v2")) || [];
+
+    function salvar() {
+      localStorage.setItem("planejador_estudos_v2", JSON.stringify(estudos));
+    }
+
+    function renderizar() {
+      const ul = document.getElementById("listaEstudos");
+      ul.innerHTML = "";
+
+      estudos
+        .sort((a, b) => new Date(a.data + 'T' + a.inicio) - new Date(b.data + 'T' + b.inicio))
+        .forEach((item, index) => {
+          const li = document.createElement("li");
+          li.className = item.concluido ? "concluido" : "";
+
+          const span = document.createElement("span");
+          const dataFormatada = new Date(item.data + 'T' + item.inicio).toLocaleDateString("pt-BR");
+
+          span.innerHTML = `<strong>${item.tema}</strong> 
+            <span class="info">(${dataFormatada}, ${item.inicio} - ${item.fim})</span>`;
+          span.style.cursor = "pointer";
+          span.onclick = () => alternarConcluido(index);
+
+          const btnRemove = document.createElement("button");
+          btnRemove.className = "btn-remove";
+          btnRemove.innerText = "Remover";
+          btnRemove.onclick = () => removerEstudo(index);
+
+          li.appendChild(span);
+          li.appendChild(btnRemove);
+          ul.appendChild(li);
+        });
+    }
+
+    function adicionarEstudo() {
+      const tema = document.getElementById("tema").value.trim();
+      const data = document.getElementById("data").value;
+      const inicio = document.getElementById("inicio").value;
+      const fim = document.getElementById("fim").value;
+
+      if (!tema || !data || !inicio || !fim) return;
+
+      estudos.push({ tema, data, inicio, fim, concluido: false });
+      document.getElementById("tema").value = "";
+      document.getElementById("data").value = "";
+      document.getElementById("inicio").value = "";
+      document.getElementById("fim").value = "";
+      salvar();
+      renderizar();
+    }
+
+    function alternarConcluido(index) {
+      estudos[index].concluido = !estudos[index].concluido;
+      salvar();
+      renderizar();
+    }
+
+    function removerEstudo(index) {
+      estudos.splice(index, 1);
+      salvar();
+      renderizar();
+    }
+
+    renderizar();
+  </script>
+</body>
+</html>
