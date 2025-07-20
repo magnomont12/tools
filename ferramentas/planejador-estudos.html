@@ -5,69 +5,164 @@
   <title>Planejador de Estudos</title>
   <meta name="description" content="Organize seus estudos por tema, data e horário. Tudo salvo localmente.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --main-color: #4F46E5;
+      --btn-color: #6366f1;
+      --btn-hover: #4338ca;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .container {
       max-width: 700px;
       margin: auto;
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
     }
 
-    h1 { text-align: center; }
-
-    input, button {
-      padding: 10px;
-      margin: 5px;
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
-    input[type="date"], input[type="time"] {
-      width: 170px;
+    p {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+
+    .inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      width: 140px;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--btn-hover);
     }
 
     ul {
       list-style-type: none;
       padding: 0;
+      margin-top: 2rem;
     }
 
     li {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     li.concluido span {
       text-decoration: line-through;
-      color: gray;
-    }
-
-    .btn-remove {
-      background-color: #e74c3c;
-      color: white;
-      border: none;
+      color: #9ca3af;
     }
 
     .info {
-      font-size: 14px;
-      color: #888;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-left: 0.5rem;
+    }
+
+    .btn-remove {
+      background-color: #ef4444;
+    }
+
+    .btn-remove:hover {
+      background-color: #dc2626;
+    }
+
+    @media (max-width: 500px) {
+      .inputs {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input[type="date"],
+      input[type="time"] {
+        width: 100%;
+      }
+
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      li button {
+        margin-top: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>📚 Planejador de Estudos</h1>
-  <p>Adicione o tema, escolha a data e defina horário de início e fim do estudo.</p>
+  <div class="container">
+    <h1>📚 Planejador de Estudos</h1>
+    <p>Adicione o tema, escolha a data e defina o horário de início e fim do estudo.</p>
 
-  <input type="text" id="tema" placeholder="Tema ou disciplina" />
-  <input type="date" id="data" />
-  <input type="time" id="inicio" />
-  <input type="time" id="fim" />
-  <button onclick="adicionarEstudo()">Adicionar</button>
+    <div class="inputs">
+      <input type="text" id="tema" placeholder="Tema ou disciplina" />
+      <input type="date" id="data" />
+      <input type="time" id="inicio" />
+      <input type="time" id="fim" />
+      <button onclick="adicionarEstudo()">Adicionar</button>
+    </div>
 
-  <ul id="listaEstudos"></ul>
+    <ul id="listaEstudos"></ul>
+  </div>
 
   <script>
-    // Define a data mínima como hoje
     const hoje = new Date().toISOString().split("T")[0];
     document.getElementById("data").min = hoje;
 

@@ -5,42 +5,128 @@
   <title>Simulador de Juros Compostos com Parcelas Fixas</title>
   <meta name="description" content="Simule parcelas mensais com juros compostos. Informe valor, juros e número de parcelas para calcular o total a pagar e os juros pagos.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --main-color: #4F46E5;
+      --btn-color: #6366f1;
+      --btn-hover: #4338ca;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
       text-align: center;
     }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+    }
+
     input {
-      padding: 10px;
-      margin: 10px;
-      width: 250px;
+      padding: 0.8rem;
+      width: 90%;
+      max-width: 280px;
+      margin: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
+
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.2s ease;
     }
+
+    button:hover {
+      background-color: var(--btn-hover);
+    }
+
     #resultado {
-      margin-top: 20px;
+      margin-top: 2rem;
       text-align: left;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+
+    h3, h4 {
+      margin-top: 1.5rem;
+      color: var(--main-color);
+    }
+
+    @media (max-width: 600px) {
+      input {
+        width: 100%;
+      }
+
+      table {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Simulador de Juros Compostos com Parcelas</h1>
-  <p>Informe os dados abaixo para simular o financiamento.</p>
+  <div class="container">
+    <h1>💰 Simulador de Juros Compostos com Parcelas</h1>
+    <p>Informe os dados abaixo para simular o financiamento.</p>
 
-  <input type="number" id="valor" placeholder="Valor emprestado (R$)" step="0.01" />
-  <input type="number" id="juros" placeholder="Juros mensais (%)" step="0.01" />
-  <input type="number" id="parcelas" placeholder="Número de parcelas" />
-  <br>
-  <button onclick="calcular()">Calcular</button>
+    <input type="number" id="valor" placeholder="Valor emprestado (R$)" step="0.01" />
+    <input type="number" id="juros" placeholder="Juros mensais (%)" step="0.01" />
+    <input type="number" id="parcelas" placeholder="Número de parcelas" />
+    <br>
+    <button onclick="calcular()">Calcular</button>
 
-  <div id="resultado"></div>
+    <div id="resultado"></div>
+  </div>
 
   <script>
   function calcular() {
@@ -50,23 +136,33 @@
     const resultado = document.getElementById('resultado');
 
     if (!valor || !juros || !parcelas || parcelas <= 0) {
-      resultado.innerHTML = "<p>Preencha todos os campos corretamente.</p>";
+      resultado.innerHTML = "<p style='color:red;'>Preencha todos os campos corretamente.</p>";
       return;
     }
+
+    const formatter = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
 
     const i = juros;
     const n = parcelas;
 
-    // Cálculo da parcela fixa (Price)
     const fator = Math.pow(1 + i, n);
     const pmt = valor * (i * fator) / (fator - 1);
     let saldoDevedor = valor;
     let totalJuros = 0;
+
+    const totalPago = pmt * n;
+
     let html = `
-      <h3>Resultado:</h3>
-      <p><strong>Valor da parcela:</strong> R$ ${pmt.toFixed(2)}</p>
+      <h3>Resumo:</h3>
+      <p><strong>Valor da parcela:</strong> ${formatter.format(pmt)}</p>
+      <p><strong>Total pago ao final:</strong> ${formatter.format(totalPago)}</p>
+      <p><strong>Total de juros pagos:</strong> ${formatter.format(totalPago - valor)}</p>
+      
       <h4>Detalhamento das parcelas:</h4>
-      <table border="1" cellspacing="0" cellpadding="6" style="margin: auto;">
+      <table>
         <tr>
           <th>Mês</th>
           <th>Parcela</th>
@@ -84,19 +180,14 @@
       html += `
         <tr>
           <td>${mes}</td>
-          <td>R$ ${pmt.toFixed(2)}</td>
-          <td>R$ ${jurosMes.toFixed(2)}</td>
-          <td>R$ ${saldoDevedor > 0 ? saldoDevedor.toFixed(2) : '0.00'}</td>
+          <td>${formatter.format(pmt)}</td>
+          <td>${formatter.format(jurosMes)}</td>
+          <td>${saldoDevedor > 0 ? formatter.format(saldoDevedor) : formatter.format(0)}</td>
         </tr>
       `;
     }
 
-    const totalPago = pmt * n;
-    html += `</table>
-      <h4>Resumo:</h4>
-      <p><strong>Total pago ao final:</strong> R$ ${totalPago.toFixed(2)}</p>
-      <p><strong>Total de juros pagos:</strong> R$ ${totalJuros.toFixed(2)}</p>
-    `;
+    html += `</table>`;
     resultado.innerHTML = html;
   }
 </script>

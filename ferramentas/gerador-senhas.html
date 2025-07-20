@@ -5,29 +5,132 @@
   <title>Gerador de Senhas Seguras</title>
   <meta name="description" content="Crie senhas seguras com letras, números e símbolos. Gere senhas aleatórias para proteger suas contas.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; padding: 40px; text-align: center; }
-    input[type="number"] { width: 80px; padding: 10px; margin: 10px; }
-    label { margin-right: 10px; }
-    button { padding: 10px 20px; cursor: pointer; }
-    #senha { margin-top: 20px; font-weight: bold; font-size: 20px; }
+    :root {
+      --main-color: #4F46E5;
+      --btn-color: #6366f1;
+      --btn-hover: #4338ca;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+    }
+
+    label {
+      margin: 0.5rem;
+      font-size: 1rem;
+    }
+
+    input[type="number"] {
+      width: 80px;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-left: 0.5rem;
+      font-size: 1rem;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 0.3rem;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: var(--btn-hover);
+    }
+
+    #senha {
+      margin-top: 1.5rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+      word-break: break-word;
+      color: var(--main-color);
+    }
+
+    @media (max-width: 480px) {
+      .options {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>🔐 Gerador de Senhas Seguras</h1>
-  <p>Escolha os critérios para gerar sua senha segura:</p>
+  <div class="container">
+    <h1>🔐 Gerador de Senhas Seguras</h1>
+    <p>Escolha os critérios para gerar sua senha segura:</p>
 
-  <label>Tamanho:
-    <input type="number" id="tamanho" min="6" max="32" value="12">
-  </label>
-  <br>
-  <label><input type="checkbox" id="letras" checked> Letras</label>
-  <label><input type="checkbox" id="numeros" checked> Números</label>
-  <label><input type="checkbox" id="simbolos" checked> Símbolos</label>
-  <br><br>
-  <button onclick="gerarSenha()">Gerar Senha</button>
+    <div class="options">
+      <label for="tamanho">Tamanho:
+        <input type="number" id="tamanho" min="6" max="32" value="12">
+      </label>
+      <label><input type="checkbox" id="letras" checked> Letras</label>
+      <label><input type="checkbox" id="numeros" checked> Números</label>
+      <label><input type="checkbox" id="simbolos" checked> Símbolos</label>
+    </div>
 
-  <p id="senha"></p>
+    <button onclick="gerarSenha()">Gerar Senha</button>
+
+    <p id="senha"></p>
+  </div>
 
   <script>
     function gerarSenha() {

@@ -6,7 +6,109 @@
   <title>Ferramentas Online Gratuitas | Calcule seu IMC, Juros Compostos e mais</title>
   <meta name="description" content="Ferramentas úteis e gratuitas como calculadora de IMC, juros compostos, gerador de senhas, nomes de bebê e planejador de estudos. Acesse sem cadastro.">
   <meta name="keywords" content="calculadora IMC, ferramentas online, juros compostos, gerador de senhas, produtividade, nomes de bebê, bloco de notas, planejador de estudos">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --main-color: #4F46E5;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --btn-color: #6366f1;
+      --btn-hover: #4338ca;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      background: linear-gradient(135deg, var(--main-color), #6366f1);
+      color: white;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .ferramenta {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease;
+    }
+
+    .ferramenta:hover {
+      transform: translateY(-5px);
+    }
+
+    .ferramenta h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .ferramenta p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #4b5563;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--btn-color);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+      background-color: #e5e7eb;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -25,7 +127,7 @@
         <p>Calcule quanto pagará ao final de um financiamento ou empréstimo com parcelas fixas e juros mensais.</p>
         <a href="ferramentas/juros-compostos.html" class="btn">Acessar ferramenta</a>
     </section>
-        <section class="ferramenta">
+    <section class="ferramenta">
         <h2>🔐 Gerador de Senhas Seguras</h2>
         <p>Crie senhas fortes para proteger suas contas. Personalize o tamanho e os caracteres.</p>
         <a href="ferramentas/gerador-senhas.html" class="btn">Acessar ferramenta</a>
@@ -40,8 +142,6 @@
         <p>Organize seus estudos por tema e horário. Tudo é salvo automaticamente no seu navegador.</p>
         <a href="ferramentas/planejador-estudos.html" class="btn">Acessar ferramenta</a>
     </section>
-
-    <!-- Mais ferramentas serão adicionadas aqui futuramente -->
   </main>
 
   <footer>

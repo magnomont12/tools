@@ -6,38 +6,103 @@
   <meta name="description" content="Calcule seu IMC (Índice de Massa Corporal) de forma rápida e fácil.">
   <meta name="keywords" content="IMC, calculadora IMC, índice de massa corporal, saúde, peso ideal">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --main-color: #4F46E5;
+      --btn-color: #6366f1;
+      --btn-hover: #4338ca;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
       text-align: center;
-      padding: 40px;
     }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      color: #6b7280;
+    }
+
     input {
-      padding: 10px;
-      margin: 10px;
-      width: 200px;
+      padding: 0.8rem;
+      width: 80%;
+      max-width: 300px;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
+
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.2s ease;
     }
+
+    button:hover {
+      background-color: var(--btn-hover);
+    }
+
     #resultado {
-      margin-top: 20px;
-      font-weight: bold;
+      margin-top: 1.8rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--main-color);
+    }
+
+    @media (max-width: 480px) {
+      input {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Calculadora de IMC</h1>
-  <p>Informe seu peso e altura para saber se está no peso ideal.</p>
+  <div class="container">
+    <h1>📏 Calculadora de IMC</h1>
+    <p>Informe seu peso e altura para saber se está no peso ideal.</p>
 
-  <input type="number" id="peso" placeholder="Peso em kg" step="0.1" />
-  <input type="number" id="altura" placeholder="Altura em metros" step="0.01" />
-  <br>
-  <button onclick="calcularIMC()">Calcular IMC</button>
+    <input type="number" id="peso" placeholder="Peso em kg" step="0.1" />
+    <br>
+    <input type="number" id="altura" placeholder="Altura em metros" step="0.01" />
+    <br>
+    <button onclick="calcularIMC()">Calcular IMC</button>
 
-  <div id="resultado"></div>
+    <div id="resultado"></div>
+  </div>
 
   <script>
     function calcularIMC() {
